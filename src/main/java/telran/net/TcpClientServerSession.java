@@ -17,7 +17,7 @@ public class TcpClientServerSession extends Thread {
         this.lastActivityTime = new AtomicLong(System.currentTimeMillis());
 
         try {
-            socket.setSoTimeout(1000); // Set socket read timeout to 1 second
+            socket.setSoTimeout(1000); // Установка таймаута для чтения сокета в 1 секунду
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -37,14 +37,14 @@ public class TcpClientServerSession extends Thread {
                         lastActivityTime.set(System.currentTimeMillis());
                     }
                 } catch (SocketTimeoutException e) {
-                    // Check for idle timeout
+                    // Проверка таймаута простоя
                     if (System.currentTimeMillis() - lastActivityTime.get() > TIMEOUT) {
-                        System.out.println("Connection closed due to inactivity");
+                        System.out.println("Соединение закрыто из-за бездействия");
                         break;
                     }
-                    // Check for server shutdown
+                    // Проверка на завершение работы сервера
                     if (!server.running) {
-                        System.out.println("Server is shutting down");
+                        System.out.println("Сервер завершает работу");
                         break;
                     }
                 }
@@ -53,7 +53,7 @@ public class TcpClientServerSession extends Thread {
             System.out.println(e);
         } finally {
             close();
-            server.removeSession(this); // Ensure the session is removed from the server's session list
+            server.removeSession(this);
         }
     }
 
